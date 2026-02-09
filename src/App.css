@@ -1,38 +1,283 @@
+/* App.css */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
+
+:root {
+  --bg-main: #0b131e;
+  --bg-card: #202b3b;
+  --text-primary: #ffffff;
+  --text-secondary: #9399a2;
+  --accent-blue: #0095ff;
+  --border-glass: rgba(255, 255, 255, 0.05);
+}
+
+* {
+  box-sizing: border-box; /* Crucial for layout sizing */
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main);
+  font-family: "Inter", sans-serif;
+  color: var(--text-primary);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; /* prevents scrollbars */
+}
+
 #root {
-  max-width: 1280px;
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+}
+
+.app-container {
+  max-width: 1600px;
+  height: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* SEARCH BAR */
+.search-wrapper {
+  flex-shrink: 0; /* Prevents search bar from shrinking */
+}
+
+.search-input {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 15px;
+  border: none;
+  background: var(--bg-card);
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* MAIN DASHBOARD GRID */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 2 parts left, 1 part right */
+  gap: 20px;
+  flex: 1; /* Fills remaining vertical space */
+  min-height: 0; /* Allows children to shrink if needed */
+}
+
+/* LEFT COLUMN (Hero, Chart, Air Conditions) */
+.main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  min-height: 0;
+}
+
+/* RIGHT COLUMN (5-Day Forecast) */
+.sidebar-column {
+  height: 100%;
+  min-height: 0;
+}
+
+/* GENERIC CARD STYLE */
+.weather-card {
+  background: var(--bg-card);
+  border-radius: 25px;
+  padding: 25px;
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- SPECIFIC CARD SIZING --- */
+
+/* Top Left: Hero Card */
+.hero-container {
+  flex: 0 0 auto; /* Keeps it from stretching */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px 20px 10px;
+}
+
+.hero-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-city {
+  font-size: 3rem;
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.hero-chance {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin: 8px 0 25px 0; /* Spacing between city and temp */
+}
+
+.hero-temp {
+  font-size: 4.5rem; /* Massive temp number */
+  margin: 0;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.hero-icon {
+  width: 180px; /* Make the main icon huge */
+  height: 180px;
+  /* Adds a subtle glow to the icon */
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.15));
+  margin-right: -20px; /* Pulls it slightly to the right edge */
+}
+
+/* Middle Left: Chart Card */
+.chart-card {
+  flex: 1; /* Takes up all available remaining space */
+  min-height: 0; /* Important for resize */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Bottom Left: Air Conditions */
+.air-card {
+  flex: 0 0 auto; /* Size to content */
+}
+
+/* Right Sidebar: Full Height */
+.full-height-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- INTERNAL ELEMENTS --- */
+
+.section-title {
+  margin: 0 0 15px 0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+
+/* Hero Section Internals */
+.hero-left {
+  display: flex;
+  flex-direction: column;
+}
+.hero-city {
+  font-size: 2rem;
+  margin: 0;
+  font-weight: 600;
+}
+.hero-temp {
+  font-size: 3.5rem;
+  margin: 5px 0;
+  font-weight: 700;
+  background: linear-gradient(to bottom, #fff, #bbb);
+  -webkit-background-clip: text; /*Tried adding background clip (ruins it, dont know how to add it without ruining stuff)*/
+  -webkit-text-fill-color: transparent;
+}
+.hero-icon {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.2));
+}
+
+/* Chart Area */
+.chart-container {
+  flex: 1; /* Fills the card */
+  width: 100%;
+  min-height: 150px; /* Minimum height so it doesn't vanish */
+}
+
+/* Forecast Strip (Icons below chart) */
+.forecast-strip {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-glass);
+}
+.strip-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.strip-temp {
+  font-weight: bold;
+}
+
+/* Air Conditions Grid */
+.air-conditions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+.condition-item {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 15px;
   text-align: center;
 }
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.condition-label {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin: 0 0 5px 0;
+  align-items: center;
+  gap: 8px;
+  filter: grayscale(0.5) opacity(0.8);
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.condition-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Right Sidebar Forecast List */
+.forecast-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
 }
-
-.card {
-  padding: 2em;
+.forecast-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-glass);
+}
+.forecast-row:last-child {
+  border-bottom: none;
+}
+.day-label {
+  width: 50px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.status-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.condition-text {
+  font-size: 0.9rem;
+}
+.temp-range span {
+  font-weight: 600;
+}
+.temp-min {
+  color: var(--text-secondary);
+  opacity: 0.7;
 }
