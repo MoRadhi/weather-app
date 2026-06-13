@@ -1,0 +1,64 @@
+version: 2.1
+
+# orbs
+orbs:
+  node: circleci/node@5.0.1
+  docker: circleci/docker@2.8.2
+
+# jobs
+jobs:
+  build:
+    docker:
+      - image: cimg/node:20.0.0
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run: |
+          echo "Installing dependencies..."
+          npm install
+  test:
+    docker:
+      - image: cimg/node:20.0.0
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run: |
+          echo "Run tests..."
+          npm run test --if-present
+
+  publish:
+    # FIX: Use a dedicated Linux VM instead of a nested docker container
+    machine:
+      image: ubuntu-2204:current
+    steps:
+      - checkout
+      # NOTE: setup_remote_docker is removed because Docker is native here.
+
+      # Standard terminal login using your environment variables
+      - run:
+          name: "Log in to Docker Hub"
+          command: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
+
+      # Standard terminal build
+      - run:
+          name: "Build Docker Image"
+          command: docker build -t moradhi1/weather-app:v1.0.2 .
+
+      # Standard terminal push
+      - run:
+          name: "Push Docker Image"
+          command: docker push moradhi1/weather-app:v1.0.2
+
+# workflow
+workflows:
+  simple_workflow:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - publish:
+          requires:
+            - test
